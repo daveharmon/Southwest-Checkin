@@ -1,8 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC 
-from selenium.webdriver.common.by import By
-import selenium.webdriver.support.ui as ui
 
 from optparse import OptionParser
 
@@ -16,15 +13,11 @@ parser.add_option("-l", "--last_name", action="store", dest="last_name",
 
 (options, args) = parser.parse_args()
 
-print options.conf_num
-print options.first_name
-print options.last_name
-
 # Create a new instance of the Chrome driver
 driver = webdriver.Chrome()
 
 # create a wait driver
-wait = ui.WebDriverWait(driver,10)
+wait = WebDriverWait(driver,10)
 
 # go to the google home page
 driver.get("http://www.southwest.com")
