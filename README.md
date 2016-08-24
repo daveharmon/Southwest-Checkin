@@ -1,5 +1,5 @@
 # Southwest-Checkin
-An easy python script to check into your Southwest flight using ChromeDriver and Selenium
+An easy python script to continuously retry checking into your Southwest flight using ChromeDriver and Selenium.  Effectively checking you in at the moment it becomes available!
 
 ### Example
 	python southwest_checkin.py -c TESTER -f Testy -l McTest
