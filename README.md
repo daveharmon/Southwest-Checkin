@@ -11,5 +11,4 @@ Also requires chromedriver to be in the PATH environment variable, the MAC OSX c
 	* -l the last name for the confirmation
 
 ### Notice
-	Try not to activate this script for very long if you can help it, constantly requesting
-	webpages can cause issues for the webserver.
+Try not to activate this script for very long if you can help it, constantly requesting webpages can cause issues for the webserver.
