@@ -28,7 +28,7 @@ print driver.title
 # click the checkin box
 checkin = driver.find_element_by_id("booking-form--check-in-tab")
 while not checkin.is_displayed():
-	print "invisible"
+	print 
 checkin.click()
 
 # get text boxes for check in
@@ -54,4 +54,10 @@ while True:
 		print "No Error!  Should be checked in!!!"
 		break
 	submit.click()
+
+# Print Documents
+printDocs = driver.find_element_by_id('printDocumentsButton')
+while not printDocs.is_displayed():
+	print
+printDocs.click()
 
