@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
 from optparse import OptionParser
+from datetime import datetime
 
 parser = OptionParser()
 parser.add_option("-c", "--confirmation_num", action="store", dest="conf_num",
@@ -10,6 +11,8 @@ parser.add_option("-f", "--first_name", action="store", dest="first_name",
                   help="first name for flight", type="string")
 parser.add_option("-l", "--last_name", action="store", dest="last_name",
                   help="last name for flight", type="string")
+parser.add_option("-t", "--time", action="store", dest="time",
+				  help="time to start checkin attempts", type="string")
 
 (options, args) = parser.parse_args()
 
@@ -40,6 +43,14 @@ last_name = driver.find_element_by_id("lastName")
 confirmation_num.send_keys(options.conf_num)
 first_name.send_keys(options.first_name)
 last_name.send_keys(options.last_name)
+
+# busy wait until it is the desired time
+# convert time to datetime object
+des_time = datetime.strptime(options.time, '%b %d %Y %I:%M%p')
+cur_time = datetime.strptime(datetime.now().strftime('%b %d %Y %I:%M%p'), '%b %d %Y %I:%M%p')
+while des_time > cur_time:
+	cur_time = datetime.strptime(datetime.now().strftime('%b %d %Y %I:%M%p'), '%b %d %Y %I:%M%p')
+	print str(des_time), ' == ', str(cur_time)
 
 # check in!
 driver.find_element_by_id("jb-button-check-in").click()
