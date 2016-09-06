@@ -45,12 +45,11 @@ first_name.send_keys(options.first_name)
 last_name.send_keys(options.last_name)
 
 # busy wait until it is the desired time
-# convert time to datetime object
 des_time = datetime.strptime(options.time, '%b %d %Y %I:%M%p')
 cur_time = datetime.strptime(datetime.now().strftime('%b %d %Y %I:%M%p'), '%b %d %Y %I:%M%p')
 while des_time > cur_time:
 	cur_time = datetime.strptime(datetime.now().strftime('%b %d %Y %I:%M%p'), '%b %d %Y %I:%M%p')
-	print str(des_time), ' == ', str(cur_time)
+	print str(des_time), ' =/= ', str(cur_time)
 
 # check in!
 driver.find_element_by_id("jb-button-check-in").click()
