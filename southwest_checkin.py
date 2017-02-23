@@ -56,13 +56,12 @@ driver.find_element_by_id("jb-button-check-in").click()
 
 # while it is too early, keep retrying!
 while True:
-	submit = driver.find_element_by_id("submitButton")
 	oops = driver.find_element_by_class_name("oopsError_message")
-	while not submit.is_displayed():
-		print ""
 	if not oops.is_displayed():
-		print "No Error!  Should be checked in!!!"
 		break
+	submit = driver.find_element_by_id("submitButton")
+	while not submit.is_displayed():
+		print "error displayed"
 	submit.click()
 
 # Print Documents
