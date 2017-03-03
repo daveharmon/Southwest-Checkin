@@ -3,6 +3,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from optparse import OptionParser
 from datetime import datetime
+from datetime import timedelta
+from time import sleep
 
 parser = OptionParser()
 parser.add_option("-c", "--confirmation_num", action="store", dest="conf_num",
@@ -46,23 +48,26 @@ last_name.send_keys(options.last_name)
 
 # busy wait until it is the desired time
 des_time = datetime.strptime(options.time, '%b %d %Y %I:%M%p')
-cur_time = datetime.strptime(datetime.now().strftime('%b %d %Y %I:%M%p'), '%b %d %Y %I:%M%p')
-while des_time > cur_time:
-	cur_time = datetime.strptime(datetime.now().strftime('%b %d %Y %I:%M%p'), '%b %d %Y %I:%M%p')
+des_time_minus_6s = des_time - timedelta(seconds=6)
+cur_time = datetime.now()
+while des_time_minus_6s > cur_time:
 	print str(des_time), ' =/= ', str(cur_time)
+	sleep(5)
+	cur_time = datetime.now()
+while des_time > cur_time:
+	cur_time = datetime.now()
 
 # check in!
 driver.find_element_by_id("jb-button-check-in").click()
 
 # while it is too early, keep retrying!
-while True:
-	oops = driver.find_element_by_class_name("oopsError_message")
-	if not oops.is_displayed():
-		break
+oops = driver.find_element_by_class_name("oopsError_message")
+while oops.is_displayed():
 	submit = driver.find_element_by_id("submitButton")
 	while not submit.is_displayed():
 		print "error displayed"
 	submit.click()
+	oops = driver.find_element_by_class_name("oopsError_message")
 
 # Print Documents
 printDocs = driver.find_element_by_id('printDocumentsButton')
