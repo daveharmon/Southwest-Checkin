@@ -36,6 +36,9 @@ while not checkin.is_displayed():
 	print 
 checkin.click()
 
+# checkin click is animated and can be too slow so wait a second
+sleep(1)
+
 # get text boxes for check in
 confirmation_num = driver.find_element_by_id("confirmationNumber")
 first_name = driver.find_element_by_id("firstName")
