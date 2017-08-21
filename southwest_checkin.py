@@ -24,20 +24,8 @@ driver = webdriver.Chrome()
 # create a wait driver
 wait = WebDriverWait(driver,10)
 
-# go to the google home page
-driver.get("http://www.southwest.com")
-
-# the page is ajaxy so the title is originally this:
-print driver.title
-
-# click the checkin box
-checkin = driver.find_element_by_id("booking-form--check-in-tab")
-while not checkin.is_displayed():
-	print 
-checkin.click()
-
-# checkin click is animated and can be too slow so wait a second
-sleep(1)
+# go directly to the checkin page
+driver.get("https://www.southwest.com/flight/retrieveCheckinDoc.html")
 
 # get text boxes for check in
 confirmation_num = driver.find_element_by_id("confirmationNumber")
@@ -54,7 +42,7 @@ des_time = datetime.strptime(options.time, '%b %d %Y %I:%M%p')
 des_time_minus_6s = des_time - timedelta(seconds=6)
 cur_time = datetime.now()
 while des_time_minus_6s > cur_time:
-	print str(des_time), ' =/= ', str(cur_time)
+	print("Waiting for checkin time " + str(des_time) + ". Time now is: " + str(cur_time))
 	sleep(5)
 	cur_time = datetime.now()
 while des_time > cur_time:
