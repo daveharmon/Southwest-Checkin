@@ -49,7 +49,7 @@ while des_time > cur_time:
 	cur_time = datetime.now()
 
 # check in!
-driver.find_element_by_id("jb-button-check-in").click()
+driver.find_element_by_id("submitButton").click()
 
 # while it is too early, keep retrying!
 oops = driver.find_element_by_class_name("oopsError_message")
@@ -65,4 +65,3 @@ printDocs = driver.find_element_by_id('printDocumentsButton')
 while not printDocs.is_displayed():
 	print()
 printDocs.click()
-
