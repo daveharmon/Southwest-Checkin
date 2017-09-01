@@ -44,7 +44,7 @@ des_time = datetime.strptime(options.time, '%b %d %Y %I:%M%p')
 des_time_minus_6s = des_time - timedelta(seconds=6)
 cur_time = datetime.now()
 while des_time_minus_6s > cur_time:
-	print(("Waiting for checkin time " + str(des_time) + ". Time now is: " + str(cur_time)))
+	print("Waiting for checkin time " + str(des_time) + ". Time now is: " + str(cur_time))
 	sleep(5)
 	cur_time = datetime.now()
 while des_time > cur_time:
