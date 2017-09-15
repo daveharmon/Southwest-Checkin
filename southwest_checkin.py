@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -49,20 +51,19 @@ while des_time > cur_time:
 	cur_time = datetime.now()
 
 # check in!
-driver.find_element_by_id("jb-button-check-in").click()
+driver.find_element_by_id("submitButton").click()
 
 # while it is too early, keep retrying!
 oops = driver.find_element_by_class_name("oopsError_message")
 while oops.is_displayed():
 	submit = driver.find_element_by_id("submitButton")
 	while not submit.is_displayed():
-		print "error displayed"
+		print("error displayed")
 	submit.click()
 	oops = driver.find_element_by_class_name("oopsError_message")
 
 # Print Documents
 printDocs = driver.find_element_by_id('printDocumentsButton')
 while not printDocs.is_displayed():
-	print
+	print()
 printDocs.click()
-
