@@ -18,8 +18,15 @@ parser.add_option("-l", "--last_name", action="store", dest="last_name",
                   help="last name for flight", type="string")
 parser.add_option("-t", "--time", action="store", dest="time",
 				  help="time to start checkin attempts", type="string")
+parser.add_option("-H", "--headless", action="store_true", dest="headless",
+				  help="set to run headless and simulate a display")
 
 (options, args) = parser.parse_args()
+
+if options.headless:
+	from pyvirtualdisplay import Display
+	display = Display(visible=0, size=(800, 600))
+	display.start()
 
 # Create a new instance of the Chrome driver
 driver = webdriver.Chrome()
