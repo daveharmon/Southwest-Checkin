@@ -2,6 +2,7 @@
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 
 from optparse import OptionParser
 from datetime import datetime
@@ -31,8 +32,8 @@ driver.get("https://www.southwest.com/flight/retrieveCheckinDoc.html")
 
 # get text boxes for check in
 confirmation_num = driver.find_element_by_id("confirmationNumber")
-first_name = driver.find_element_by_id("firstName")
-last_name = driver.find_element_by_id("lastName")
+first_name = driver.find_element_by_id("passengerFirstName")
+last_name = driver.find_element_by_id("passengerLastName")
 
 # insert data
 confirmation_num.send_keys(options.conf_num)
@@ -42,28 +43,52 @@ last_name.send_keys(options.last_name)
 # busy wait until it is the desired time
 des_time = datetime.strptime(options.time, '%b %d %Y %I:%M%p')
 des_time_minus_6s = des_time - timedelta(seconds=6)
+des_time_minus_30m = des_time - timedelta(minutes=30)
 cur_time = datetime.now()
+while des_time_minus_30m > cur_time:
+	print("Waiting for checkin time " + str(des_time) + ". Time now is: " + str(cur_time) + ". Waiting 30min.")
+	sleep(29*60)
+	cur_time = datetime.now()
 while des_time_minus_6s > cur_time:
-	print("Waiting for checkin time " + str(des_time) + ". Time now is: " + str(cur_time))
+	print("Waiting for checkin time " + str(des_time) + ". Time now is: " + str(cur_time) + ". Waiting 5s.")
 	sleep(5)
 	cur_time = datetime.now()
 while des_time > cur_time:
 	cur_time = datetime.now()
 
 # check in!
-driver.find_element_by_id("submitButton").click()
+print("checking in...")
+driver.find_element_by_id("form-mixin--submit-button").click()
 
-# while it is too early, keep retrying!
-oops = driver.find_element_by_class_name("oopsError_message")
-while oops.is_displayed():
-	submit = driver.find_element_by_id("submitButton")
-	while not submit.is_displayed():
+# while an error message exists, keep trying!
+try:
+	while driver.find_element_by_class_name("message-error"):
 		print("error displayed")
-	submit.click()
-	oops = driver.find_element_by_class_name("oopsError_message")
+		sleep(0.1)
+		submit.click()
+except NoSuchElementException:
+        print("no error displayed, moving on!")
 
-# Print Documents
-printDocs = driver.find_element_by_id('printDocumentsButton')
-while not printDocs.is_displayed():
-	print()
-printDocs.click()
+# confirm checkin
+while True:
+	try:
+		checkInConfirm = driver.find_element_by_class_name('submit-button')
+		while checkInConfirm.get_attribute("disabled") is not None:
+			try:
+				print("waiting to click confirm button")
+				sleep(0.1)
+				checkInConfirm = driver.find_element_by_class_name('submit-button')
+			except WebDriverException:
+				# this sometimes fails, give it a moment and try again
+				sleep(0.1)
+				checkInConfirm = driver.find_element_by_class_name('submit-button')
+		checkInConfirm.click()
+		break;
+	except NoSuchElementException, StaleElementReferenceException:
+		print("submit button not found, retrying")
+		sleep(0.1)
+print("checked in - getting boarding position")
+boardingPositionDiv = driver.find_element_by_class_name("air-check-in-passenger-item--information-boarding-position")
+boardingPositionSpan = boardingPositionDiv.find_element_by_class_name("swa-g-screen-reader-only")
+position = boardingPositionSpan.get_attribute('innerHTML')
+print(position)
