@@ -5,9 +5,10 @@ An easy python script to continuously retry checking into your Southwest flight 
 	python southwest_checkin.py -c TESTER -f Testy -l McTest -t 'Jul 02 2017 07:00AM'
 
 ### Requirements
-install the selenium python library with pip via `pip install -r requirements.txt`
-Also requires chromedriver to be in the PATH environment variable, the MAC OSX chrome driver is in this repo, other versions are available [here](https://sites.google.com/a/chromium.org/chromedriver/downloads)
-If you're running in Linux, you'll also need to install a few other dependencies:
+install the selenium python library with pip via `pip install -r requirements.txt`  
+Also requires chromedriver to be in the PATH environment variable. The MAC OSX chrome driver is in this repo, other versions are available [here](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+
+If you're running in Linux, you'll also need to install a few other dependencies:  
 `sudo apt-get install chromium-browser xvfb libgconf-2-4`
 
 ### Options
